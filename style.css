@@ -14,6 +14,11 @@ body {
   background-color: var(--color-accent);
   font-family: var(--font-family);
 }
+
+#app {
+  width: 100vw;
+}
+
 #header {
   display: flex;
   flex-direction: column;
@@ -42,10 +47,10 @@ body {
 
 #todo-input {
   max-width: 500px;
-  width: 80vw;
+  /* width: 80vw; */
   height: 35px;
   border-radius: 5px;
-  flex-grow: 5;
+  flex-grow: 8;
   font-family: inherit;
   font-size: var(--size-font);
   padding: 5px;
