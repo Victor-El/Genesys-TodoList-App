@@ -13,27 +13,32 @@ self.addEventListener('install', function (event) {
 
   event.waitUntil(caches.open(CACHE_NAME).then(function (cache) {
     console.log("Opened cache");
+    cache.keys().then(function (keys) {
+      keys.forEach((request) => {
+        cache.delete(request);
+      });
+    });
     return cache.addAll(URLS_TO_CACHE);
   }));
 });
 
-self.addEventListener('activate', function() {
+self.addEventListener('activate', function () {
   console.log("Activated");
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(caches.match(event.request).then(function(response) {
+self.addEventListener('fetch', function (event) {
+  event.respondWith(caches.match(event.request).then(function (response) {
     if (response) {
       return response;
     }
 
-    return fetch(event.request).then(function(response) {
+    return fetch(event.request).then(function (response) {
       if (!response || response.status !== 200 || response.type !== 'basic') {
         return response;
       }
 
       const clonedResponse = response.clone();
-      caches.open(CACHE_NAME).then(function(cache) {
+      caches.open(CACHE_NAME).then(function (cache) {
         cache.put(event.request, clonedResponse);
       });
 
