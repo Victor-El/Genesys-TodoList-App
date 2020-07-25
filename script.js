@@ -1,11 +1,11 @@
-const Todo = function (text, completed) {
+const Todo = function (text, completed, id) {
   /*
   Optionally I can remove this context variable bound
   to the instance of this object and replace the anonymous
   functions passed to the event listeners with arrowfunctions. In objects, arrow functions uses the context of where the objects method is being called from as opposed to to anonymous functions which always uses the context of the object it is defined in.
   */
   const context = this;
-  this.id = +new Date();
+  this.id = id || +new Date();
   this.completed = completed;
   this.text = text;
 
@@ -78,7 +78,7 @@ const TodoManager = function (todoListNode, summaryEl, modal, emptyEl, updateInp
   if (localStorage.getItem(TODOS_LOCAL_STORAGE_KEY)) {
     const initLocalStorageDataArray = JSON.parse(initLocalStorageData);
     initLocalStorageDataArray.forEach(t => {
-      todoList.push(new Todo(t.text, t.completed));
+      todoList.push(new Todo(t.text, t.completed, t.id));
     });
   }
 
@@ -199,7 +199,7 @@ inputField.addEventListener('keyup', function (e) {
   // checking for enter key
   if (e.keyCode == 13) {
     if (inputField.value.trim()) {
-      TodoManager.addTodo(new Todo(inputField.value, false));
+      TodoManager.addTodo(new Todo(inputField.value, false, null));
       inputField.value = "";
     }
   }
@@ -217,7 +217,7 @@ clearAllBtn.addEventListener("click", function () {
 
 addBtn.addEventListener("click", function (e) {
   if (inputField.value.trim()) {
-    TodoManager.addTodo(new Todo(inputField.value, false));
+    TodoManager.addTodo(new Todo(inputField.value, false, null));
     inputField.value = "";
   } else {
     alert("Invalid todo");
